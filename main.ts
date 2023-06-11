@@ -43,7 +43,7 @@ export default class ClockworkLullaby extends Plugin {
 		await this.app.workspace.openLinkText(
 			`Clockwork/${year}/${year}.md`,
 			"",
-			true
+			false
 		);
 	}
 
@@ -55,16 +55,15 @@ export default class ClockworkLullaby extends Plugin {
 			(Number(date) - Number(year_number)) / (24 * 60 * 60 * 1000)
 		);
 		const week = String(Math.ceil(days / 7)).padStart(2, "0");
-		await this.makeFolder(`Clockwork/${year}/week`);
+		await this.makeFolder(`Clockwork/${year}/weeks`);
 		await this.app.workspace.openLinkText(
-			`Clockwork/${year}/week/${year}-W${week}.md`,
+			`Clockwork/${year}/weeks/${year}-W${week}.md`,
 			"",
 			false
 		);
 	}
 
 	async makeFolder(path: string) {
-		new Notice(path);
 		if (path == "") return;
 		if (this.app.vault.getAbstractFileByPath(path)) return;
 		if (path.contains("/"))
@@ -73,51 +72,51 @@ export default class ClockworkLullaby extends Plugin {
 	}
 
 	async onload() {
-		this.addRibbonIcon("sun", "Open Today", async () => {
-			await this.openDaily;
+		this.addRibbonIcon("sun", "Open Today", () => {
+			this.openDaily();
 		});
 
-		this.addRibbonIcon("moon", "Open This Month", async () => {
-			await this.openMonthly;
+		this.addRibbonIcon("moon", "Open This Month", () => {
+			this.openMonthly();
 		});
 
-		this.addRibbonIcon("sun-moon", "Open This Year", async () => {
-			await this.openYearly;
+		this.addRibbonIcon("sun-moon", "Open This Year", () => {
+			this.openYearly();
 		});
 
-		this.addRibbonIcon("star", "Open This Week", async () => {
-			await this.openWeekly;
+		this.addRibbonIcon("star", "Open This Week", () => {
+			this.openWeekly();
 		});
 
 		this.addCommand({
 			id: "open-daily",
 			name: "Open Today",
-			callback: async () => {
-				await this.openDaily;
+			callback: () => {
+				this.openDaily();
 			},
 		});
 
 		this.addCommand({
 			id: "open-monthly",
 			name: "Open This Month",
-			callback: async () => {
-				await this.openMonthly;
+			callback: () => {
+				this.openMonthly();
 			},
 		});
 
 		this.addCommand({
 			id: "open-yearly",
 			name: "Open This Year",
-			callback: async () => {
-				await this.openYearly;
+			callback: () => {
+				this.openYearly();
 			},
 		});
 
 		this.addCommand({
 			id: "open-weekly",
 			name: "Open This Week",
-			callback: async () => {
-				await this.openWeekly;
+			callback: () => {
+				this.openWeekly();
 			},
 		});
 	}
